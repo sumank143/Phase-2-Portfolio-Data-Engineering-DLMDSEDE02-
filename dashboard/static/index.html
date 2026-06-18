@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Safety Analytics Dashboard</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header>
+  <h1>Real-Time Road Safety Analytics</h1>
+  <div id="ws-status" class="status disconnected">Disconnected</div>
+</header>
+
+<main>
+  <!-- KPI Cards -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" id="total-accidents">--</div>
+      <div class="kpi-label">Total Accidents</div>
+    </div>
+    <div class="kpi-card fatal">
+      <div class="kpi-value" id="total-fatal">--</div>
+      <div class="kpi-label">Fatal</div>
+    </div>
+    <div class="kpi-card serious">
+      <div class="kpi-value" id="total-serious">--</div>
+      <div class="kpi-label">Serious</div>
+    </div>
+    <div class="kpi-card slight">
+      <div class="kpi-value" id="total-slight">--</div>
+      <div class="kpi-label">Slight</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="total-casualties">--</div>
+      <div class="kpi-label">Total Casualties</div>
+    </div>
+  </section>
+
+  <!-- Charts Row -->
+  <section class="charts-row">
+    <div class="chart-card">
+      <h3>Top Districts by Severity</h3>
+      <div id="districts-chart" class="chart-area"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Weather Conditions</h3>
+      <div id="weather-chart" class="chart-area"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Driver Age Distribution</h3>
+      <div id="age-chart" class="chart-area"></div>
+    </div>
+  </section>
+
+  <!-- Prediction Form -->
+  <section class="predict-section">
+    <h3>Severity Prediction</h3>
+    <div class="predict-form">
+      <select id="age-band"><option>Loading...</option></select>
+      <select id="sex-driver"><option>Loading...</option></select>
+      <select id="vehicle-type"><option>Loading...</option></select>
+      <button id="predict-btn" onclick="runPrediction()">Predict</button>
+    </div>
+    <div id="predict-result" class="predict-result"></div>
+  </section>
+</main>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

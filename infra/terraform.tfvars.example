@@ -1,0 +1,11 @@
+# terraform.tfvars.example — copy to terraform.tfvars and fill in
+
+project                = "accident-severity"
+aws_region             = "eu-central-1"
+azure_subscription_id  = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+azure_location         = "eastus"
+azure_resource_group   = "accident-severity-rg"
+db_username            = "postgres"
+db_password            = "CHANGE_ME_strong_password_123"
+rds_extra_ingress_cidrs = ["YOUR.IP.HERE/32"]
+glue_number_of_workers = 2

@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  # ── Producer ────────────────────────────────────────────
+  producer:
+    build: ./producer
+    container_name: accident-producer
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    depends_on:
+      dashboard:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── ML Prediction Service ───────────────────────────────
+  ml-predict:
+    build: ./ml_predict
+    container_name: accident-ml-predict
+    ports:
+      - "8001:8001"
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Dashboard ───────────────────────────────────────────
+  dashboard:
+    build: ./dashboard
+    container_name: accident-dashboard
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ML_PREDICT_URL=http://ml-predict:8001
+    restart: unless-stopped
+    depends_on:
+      ml-predict:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

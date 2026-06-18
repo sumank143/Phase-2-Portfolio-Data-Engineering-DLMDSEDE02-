@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+
+# Install Docker
+yum update -y
+yum install -y docker
+systemctl enable docker
+systemctl start docker
+
+# Run producer container
+docker run -d \
+  --name accident-producer \
+  --restart unless-stopped \
+  -e S3_BUCKET="${s3_bucket}" \
+  -e KAFKA_BROKERS="${kafka_brokers}" \
+  -e KAFKA_SASL_PASSWORD="${kafka_password}" \
+  -e PRODUCER_RATE=100 \
+  -e PRODUCER_MAX_RECORDS=0 \
+  accident-severity/producer
